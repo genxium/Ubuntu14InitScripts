@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then 
+	echo "Usage: $0 <dbname> <mysql user> <IP or FQDN>"
+	exit 1
+fi
+
+dbname=$1
+user=$2
+addr=$3
+
+mysql -uroot -e "GRANT ALL PRIVILEGES ON $dbname.* TO $user@$addr;" 

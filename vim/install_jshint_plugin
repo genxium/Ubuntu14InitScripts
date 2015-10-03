@@ -1,0 +1,14 @@
+#!/bin/bash
+
+sudo su - root -c "apt-get -y install npm"
+
+sudo su - root -c "npm install -g jshint"
+
+sudo su - root -c "apt-get -y install nodejs-legacy"
+
+# vim plugin is by default installed for the current OS user
+mkdir -p ~/.vim/autoload ~/.vim/bundle 
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+mkdir -p ~/.vim/bundle/jshint/plugin
+curl -LSso ~/.vim/bundle/jshint/plugin/jshint.vim https://raw.githubusercontent.com/walm/jshint.vim/master/plugin/jshint.vim

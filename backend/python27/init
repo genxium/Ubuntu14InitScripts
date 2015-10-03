@@ -1,0 +1,28 @@
+#!/bin/bash
+
+pyname=python
+pipname=pip
+
+sudo su - root -c "apt-get -y install $pyname"
+sudo su - root -c "apt-get -y install $pyname-pip"
+sudo su - root -c "$pipname install --upgrade pip"
+
+sudo su - root -c "apt-get -y install lib$pyname-dev"
+
+sudo su - root -c "$pipname install SQLALchemy"
+sudo su - root -c "$pipname install --upgrade SQLALchemy"
+
+sudo su - root -c "$pipname install tornado"
+sudo su - root -c "$pipname install --upgrade tornado"
+
+sudo su - root -c "apt-get -y install libffi"
+sudo su - root -c "apt-get -y install libffi-dev"
+
+sudo su - root -c "$pipname install pycrypto"
+sudo su - root -c "$pipname install --upgrade pycrypto"
+
+sudo su - root -c "$pipname install pyOpenSSL"
+sudo su - root -c "$pipname install --upgrade pyOpenSSL"
+
+sudo su - root -c "$pipname install psycopg2"
+sudo su - root -c "$pipname install --upgrade psycopg2"

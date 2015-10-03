@@ -1,0 +1,23 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "apt-get -y install mysql-server-5.6"
+
+sudo su - root -c "mysql_install_db --user=mysql --ldata=/var/lib/mysql"
+sudo su - root -c "cat $basedir/mysqld_template.conf > /etc/my.cnf"
+
+sudo su - root -c "$basedir/start"
+
+# wait for mysqld starting up
+sudo su - root -c "sleep 5"
+
+# remote access is disabled by default
+mysql -uroot -e "CREATE USER 'cu'@'localhost'"
+mysql -uroot -e "CREATE USER 'rep'@'localhost'"
+
+dbname='test'
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $dbname"
+
+sudo su - root -c "$basedir/grant_read_write $dbname cu localhost"
+sudo su - root -c "$basedir/grant_read_only $dbname rep localhost"

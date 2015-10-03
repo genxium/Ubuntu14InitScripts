@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# create group server
+groupname=server
+line=$(sudo su - root -c "cat /etc/group|grep $groupname") 
+if [[ -z "${line// }" ]]; then
+	sudo su - root -c "groupadd $groupname"
+else
+	echo "group $groupname already exists"
+fi
+
+# create group developer
+groupname=developer
+line=$(sudo su - root -c "cat /etc/group|grep $groupname") 
+if [[ -z "${line// }" ]]; then
+	sudo su - root -c "groupadd $groupname"
+else
+	echo "group $groupname already exists"
+fi
+
+# create public git folder for developer group
+sudo su - root -c "mkdir -p /git"
+# set ownership, mod and gid
+sudo su - root -c "chown -R root:developer /git"
+sudo su - root -c "chmod -R 775 /git"
+sudo su - root -c "chmod -R g+s /git"

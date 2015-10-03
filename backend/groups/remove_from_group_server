@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+	echo "Usage: $0 <existing username>"
+	exit 1
+fi
+username=$1
+sudo su - root -c "gpasswd -d $username server"

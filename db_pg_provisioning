@@ -1,0 +1,9 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# Install vim
+sudo su - root -c "$basedir/vim/init"
+
+# Install and start pg94
+sudo su - root -c "$basedir/database/postgres/init"

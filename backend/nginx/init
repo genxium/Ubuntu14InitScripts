@@ -1,0 +1,12 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "apt-get -y install nginx"
+sudo su - root -c "apt-get -y upgrade nginx"
+
+sudo su - root -c "mkdir -p /etc/nginx/vhost"
+sudo su - root -c "cat $basedir/nginx_template.conf > /etc/nginx/nginx.conf"
+
+sudo su - root -c "$basedir/../groups/init"
+sudo su - root -c "$basedir/../groups/add_to_group_server www-data"

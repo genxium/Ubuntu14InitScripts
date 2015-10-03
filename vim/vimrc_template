@@ -1,0 +1,14 @@
+runtime! debian.vim
+
+set nu
+set hlsearch
+syntax on
+set visualbell
+set noerrorbells
+set tabstop=8
+set shiftwidth=8
+
+silent! call pathogen#infect()
+silent! call pathogen#helptags()
+
+" Don't apply `set expandtab` for the convenience of Makefile formatting 

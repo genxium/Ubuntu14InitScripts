@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# install openjdk 1.7.0
+sudo su - root -c "apt-get -y install openjdk-7-jdk"
+

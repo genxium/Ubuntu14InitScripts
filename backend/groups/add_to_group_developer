@@ -5,4 +5,4 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 username=$1
-sudo su - root -c "usermod -G developer $username"
+sudo su - root -c "usermod -a -G developer $username"

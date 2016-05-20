@@ -3,6 +3,15 @@
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 sudo su - root -c "apt-get -y install vim"
-$basedir/install_jshint_plugin
 
+# install pathogen 
+mkdir -p ~/.vim/autoload ~/.vim/bundle 
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+# initialize vimrc globally
 sudo su - root -c "cat $basedir/vimrc_template > /etc/vim/vimrc"
+
+sudo su - root -c "$basedir/../backend/node/init"
+$basedir/install_jshint_plugin
+$basedir/install_esformatter
+$basedir/install_vim_node

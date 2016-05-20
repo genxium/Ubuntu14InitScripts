@@ -1,0 +1,12 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# sudo su - root -c "$basedir/../backend/node/init"
+# sudo su - root -c "apt-get install -y git" 
+
+sudo su - root -c "npm install -g esformatter"
+
+git clone https://github.com/millermedeiros/vim-esformatter ~/.vim/bundle/vim-esformatter  
+
+# To configure the plugin, please refer to https://github.com/millermedeiros/esformatter/blob/master/doc/config.md

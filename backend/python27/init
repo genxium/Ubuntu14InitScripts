@@ -24,5 +24,7 @@ sudo su - root -c "$pipname install --upgrade pycrypto"
 sudo su - root -c "$pipname install pyOpenSSL"
 sudo su - root -c "$pipname install --upgrade pyOpenSSL"
 
+sudo su - root -c "apt-get -y install libpq-dev"
+
 sudo su - root -c "$pipname install psycopg2"
 sudo su - root -c "$pipname install --upgrade psycopg2"

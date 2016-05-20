@@ -2,6 +2,9 @@
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+# Install node 
+sudo su - root -c "$basedir/backend/node/init"
+
 # Install vim
 sudo su - root -c "$basedir/vim/init"
 
@@ -10,9 +13,6 @@ sudo su - root -c "$basedir/backend/nginx/init"
 
 # Install java
 sudo su - root -c "$basedir/backend/java/init"
-
-# Install npm
-sudo su - root -c "$basedir/backend/npm/init"
 
 # Install py27
 sudo su - root -c "$basedir/backend/python27/init"

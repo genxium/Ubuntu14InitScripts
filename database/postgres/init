@@ -27,8 +27,8 @@ PGCONF="/etc/postgresql/$version/main" # on Ubuntu, $PGCONF is different from $P
 # set uid & gid
 sudo su - root -c "chmod -R u+s $PGCONF"
 sudo su - root -c "chmod -R g+s $PGCONF"
-sudo su - postgres -c "touch  $PGCONF/postgresql.conf"
-sudo su - postgres -c "touch  $PGCONF/pg_hba.conf"
+sudo su - postgres -c "touch $PGCONF/postgresql.conf"
+sudo su - postgres -c "touch $PGCONF/pg_hba.conf"
 
 sudo su - root -c "cat $basedir/postgresql_template.conf >  $PGCONF/postgresql.conf" # overwrites `listen_addresses` to allow non-local TCP connections 
 sudo su - root -c "cat $basedir/pg_hba_template.conf >  $PGCONF/pg_hba.conf"

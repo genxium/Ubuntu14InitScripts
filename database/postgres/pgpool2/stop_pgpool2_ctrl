@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo su - root -c "pgpool stop"

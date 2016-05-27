@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# TODO: log rotation
+sudo su - root -c "pgpool -n > /var/log/pgpool.log 2>&1 &"

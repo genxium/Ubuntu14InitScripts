@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then 
+	echo "Usage: $0 <postgres version> <cluster name>"
+	exit 1
+fi
+
+version=$1
+cluster=$2
+
+sudo su - root -c "pg_ctlcluster $version $cluster start"

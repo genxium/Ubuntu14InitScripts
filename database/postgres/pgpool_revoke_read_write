@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -ne 6 ]; then 
+	echo "Usage: $0 <pgpool host> <pgpool port> <granter> <dbname> <schema> <grantee>"
+	exit 1
+fi
+
+pgpool_host=$1
+pgpool_port=$2
+
+# the granter should be owner of the target database 
+granter=$3 
+dbname=$4
+schema=$5
+grantee=$6
+
+sudo su - postgres -c "psql -h $pgpool_host -p $pgpool_port -U $granter -d $dbname -c \"REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA $schema FROM $grantee;\""

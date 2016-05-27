@@ -1,0 +1,20 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "apt-get install -y pgpool2"
+
+sudo su - root -c "chmod -R u+s /etc/pgpool2"
+sudo su - root -c "chmod -R g+s /etc/pgpool2"
+
+sudo su - root -c "cat $basedir/pgpool_replication_template.conf > /etc/pgpool2/pgpool.conf"
+sudo su - root -c "cat $basedir/pgpool_hba_template.conf > /etc/pgpool2/pool_hba.conf"
+
+$basedir/pgpool_stop
+$basedir/pgpool_start
+
+pgpool_host='localhost'
+pgpool_port='9999'
+owner='plm'
+dbname='test'
+$basedir/pgpool_createdb_for_cu_and_rep $pgpool_host $pgpool_port $owner $dbname

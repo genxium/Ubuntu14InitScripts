@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# -ne 6 ]; then 
+	echo "Usage: $0 <pgpool host> <pgpool port> <granter> <dbname> <schema> <grantee>"
+	exit 1
+fi
+
+pgpool_host=$1
+pgpool_port=$2
+
+# the granter should be owner of the target database 
+granter=$3 
+dbname=$4
+schema=$5
+grantee=$6
+
+sudo su - root -c "psql -h $pgpool_host -p $pgpool_port -U $granter -d $dbname -c \"GRANT SELECT ON ALL TABLES IN SCHEMA $schema TO $grantee;\""
+
+# to check privileges of a table, e.g. 'agent' in a database, e.g. 'test', to grantees
+# shell> sudo su - postgres
+# shell> psql -d $dbname -c "SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name='agent';"

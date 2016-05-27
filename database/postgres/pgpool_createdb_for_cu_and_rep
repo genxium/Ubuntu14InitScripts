@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -ne 4 ]; then 
+	echo "Usage: $0 <pgpool host> <pgpool port> <owner> <dbname>"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+pgpool_host=$1
+pgpool_port=$2
+owner=$3
+dbname=$4
+
+sudo su - postgres -c "createdb -h $pgpool_host -p $pgpool_port -U $owner $dbname -E unicode -T template0"
+
+schema='public'
+# grant proper privileges of tables in database.schema, e.g. test.public to users 'cu' and 'rep'
+$basedir/pgpool_grant_read_write $pgpool_host $pgpool_port $owner $dbname $schema cu
+$basedir/pgpool_grant_read_only $pgpool_host $pgpool_port $owner $dbname $schema rep

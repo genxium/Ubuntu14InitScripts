@@ -1,9 +1,0 @@
-#!/bin/bash
-
-dbname="test"
-pgpool_port=9999
-role=cu
-
-# The `pgpool` merely pipelines the `role` to access the dedicated `postgresql server` daemons.  
-# For now, it's by design that role `cu` is NOT granted the access to create databases and role `postgres` is only allowed to be used by a local UNIX socket. 
-sudo su - root -c "pgbench -i -p $pgpool_port -U $role $dbname" 

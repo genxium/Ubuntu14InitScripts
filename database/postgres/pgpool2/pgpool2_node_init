@@ -1,7 +1,0 @@
-#!/bin/bash
-
-version="9.5"
-basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
-# install pgpool2 Lib
-sudo su - root -c "apt-get install -y postgresql-$version-pgpool2"

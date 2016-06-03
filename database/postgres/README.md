@@ -1,4 +1,4 @@
-The scripts in this directory is used for a minimum setup of `pgpool-II master/slave mode` + `PostgreSQL hot-standby with streaming replication`. 
+The scripts in this directory are used for a minimum setup of `pgpool-II master/slave mode` + `PostgreSQL hot-standby with streaming replication`. 
 
 The following references are recommended to read before using the scripts.
 

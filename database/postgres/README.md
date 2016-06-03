@@ -1,5 +1,8 @@
-As of pgpool2-3.4.3 on Ubuntu 14.04, the pcp config file is located at `/etc/pgpool2/pcp.conf`, which might vary w.r.t. versions and platforms.
+The scripts in this directory is used for a minimum setup of `pgpool-II master/slave mode` + `PostgreSQL hot-standby with streaming replication`. 
 
-Please refer to [pgpool user manual](http://www.pgpool.net/docs/latest/tutorial-en.html#pcp-config) for pcp commands. Upon attaching (bringing up) inconsistent backends by [pcp_attach_node](http://pgpool.net/docs/latest/pgpool-en.html#pcp_attach_node), please refer to [online recovery manual](http://pgpool.net/docs/latest/pgpool-en.html#online-recovery) for more information.
+The following references are recommended to read before using the scripts.
 
-Note that [pcp_promote_node](http://pgpool.net/docs/latest/pgpool-en.html#pcp_promote_node) is used by [master/slave mode](http://pgpool.net/docs/latest/pgpool-en.html#master_slave_mode) + [streaming replication](http://pgpool.net/docs/latest/pgpool-en.html#stream) only, thus NOT applicable to [replication mode](http://pgpool.net/docs/latest/pgpool-en.html#replication_mode).
+- [Write-Ahead-Logging](https://www.postgresql.org/docs/current/static/wal-intro.html)
+- [PostgreSQL Binary Replication Tutorial](https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial#PITR.2C_Warm_Standby.2C_Hot_Standby.2C_and_Streaming_Replication)
+- [PostgreSQL Log-Shipping Standby Servers Documentation](https://www.postgresql.org/docs/current/static/warm-standby.html), especially the motivation, requirements and features of [Streaming Replication](https://www.postgresql.org/docs/current/static/warm-standby.html#STREAMING-REPLICATION)
+- [Pgpool-II User Manual](http://pgpool.net/docs/latest/pgpool-en.html), especially the parts of [Master/Slave Mode](http://pgpool.net/docs/latest/pgpool-en.html#master_slave_mode) and [Streaming Replication Sub Mode](http://pgpool.net/docs/latest/pgpool-en.html#stream).

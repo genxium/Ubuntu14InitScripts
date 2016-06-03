@@ -28,7 +28,7 @@ port='5432'
 # the automatically created cluster `main` is only listening to local connections
 sudo su - postgres -c "pg_dropcluster --stop $version $cluster"
 
-$basedir/backend_create_cluster $version $cluster $port
-$basedir/backend_cluster_start_and_configure $version $cluster $port
+$basedir/create_standby_cluster $version $cluster $port
+$basedir/start_and_configure $version $cluster $port
 
 # database creation is handled by the pgpool instance 

@@ -11,7 +11,7 @@ version=$1
 cluster=$2
 port=$3 # port number is required because the `pg_wrapper` utilities provided by Ubuntu is not covering features such as `createdb`, `createuser` and the most general purpose `psql`, whose cluster filtering are all <host>:<port> based.
 
-sudo su - postgres -c "pg_createcluster -p $port --createclusterconf=$basedir/backend_create_cluster_template.conf $version $cluster"
+sudo su - postgres -c "pg_createcluster -p $port --createclusterconf=$basedir/createcluster_template.conf $version $cluster"
 # drop it with 
 #	shell> sudo su - postgres -c "pg_dropcluster $version $cluster"
 # after stopping the cluster, or 

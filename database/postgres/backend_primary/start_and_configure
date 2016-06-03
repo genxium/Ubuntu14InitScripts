@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then 
+	echo "Usage: $0 <postgres version> <cluster name> <port to listen on>"
+	exit 1
+fi
+
+version=$1
+cluster=$2
+port=$3
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# local OS user as $PGHOME and $PGCONF owner is by default 'postgres' without password
+# local postgresql-server superuser is by default 'postgres' without password
+# thus OS sudoer could operate properly as OS user 'postgres' and postgresql-server superuser 'postgres' by `sudo su - postgres -c "<command>"`
+
+PGHOME=/var/lib/postgresql
+PGDATA="$PGHOME/$version/$cluster"
+PGCONF="/etc/postgresql/$version/$cluster" # on Ubuntu, $PGCONF is different from $PGDATA to favor `pg_wrapper` by default, reference http://manpages.ubuntu.com/manpages/wily/man1/pg_wrapper.1.html 
+
+# set uid & gid
+sudo su - root -c "chmod -R u+s $PGCONF"
+sudo su - root -c "chmod -R g+s $PGCONF"
+sudo su - postgres -c "touch $PGCONF/pg_hba.conf"
+
+sudo su - root -c "cat $basedir/hba_template.conf > $PGCONF/pg_hba.conf"
+
+sudo su - postgres -c "pg_ctlcluster $version $cluster start"
+# stop it with 
+#	shell> sudo su - postgres -c "pg_ctlcluster $version $cluster stop"
+# or
+#	shell> sudo su - postgres -c "pg_ctlcluster $version $cluster -m fast stop"
+
+# create pool manager 
+sudo su - postgres -c "createuser -p $port -d -R -S plm"
+sudo su - postgres -c "psql -p $port -c \"ALTER ROLE plm WITH REPLICATION;\""
+
+# create cluster user
+sudo su - postgres -c "createuser -p $port -D -R -S cu"
+# to remove 'cu', shell> sudo su - postgres -c "dropuser cu"
+  
+# create replica user
+sudo su - postgres -c "createuser -p $port -D -R -S rep"
+sudo su - postgres -c "psql -p $port -c \"ALTER ROLE rep WITH REPLICATION;\""
+# to remove 'rep', shell> sudo su - postgres -c "dropuser rep"

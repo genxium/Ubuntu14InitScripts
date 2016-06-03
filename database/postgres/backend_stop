@@ -2,6 +2,12 @@
 
 # Note that Ubuntu has its own `pg_wrapper` binaries for PostgreSQL client commands, reference http://manpages.ubuntu.com/manpages/precise/man1/pg_wrapper.1.html
 
-version=9.5
+if [ $# -ne 2 ]; then 
+	echo "Usage: $0 <postgres version> <cluster name>"
+	exit 1
+fi
 
-sudo su - root -c "pg_ctlcluster $version main stop"
+version=$1
+cluster=$2
+
+sudo su - root -c "pg_ctlcluster $version $cluster stop"

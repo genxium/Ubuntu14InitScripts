@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# This script is assumed to be executed at the backend postgres server. 
+
+if [ $# -ne 5 ]; then 
+	echo "Usage: $0 <postgres version> <primary cluster name> <primary port> <standby hostname or ip> <standby cluster name>"
+	exit 1
+fi
+
+version=$1
+primary_cluster=$2
+primary_port=$3
+standby_host=$4
+standby_cluster=$5
+
+PGHOME=/var/lib/postgresql
+PRIMARY_PGDATA="$PGHOME/$version/$primary_cluster"
+STANDBY_PGDATA="$PGHOME/$version/$standby_cluster"
+
+rsync_target="postgres@$standby_host:$STANDBY_PGDATA/"
+
+# reference https://wiki.postgresql.org/wiki/Binary_Replication_Tutorial
+
+# The target standby server should be STOPPED beforehand. 
+# The rsync target should be accessible by local OS user `postgres` via public key authentication.
+sudo su - postgres -c "psql -p $primary_port -c \"SELECT pg_start_backup('clone', true)\""
+sudo su - postgres -c "rsync -ac --exclude pg_xlog --exclude postgresql.conf --exclude postgresql.pid --exclude postmaster.pid $PRIMARY_PGDATA/ $rsync_target"
+sudo su - postgres -c "psql -p $primary_port -c \"SELECT pg_stop_backup()\""
+sudo su - postgres -c "rsync -ac $PRIMARY_PGDATA/pg_xlog $rsync_target"

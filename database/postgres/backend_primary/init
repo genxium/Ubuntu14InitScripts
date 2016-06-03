@@ -1,0 +1,34 @@
+#!/bin/bash
+
+version='9.5'
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
+
+sudo su - root -c "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
+  sudo apt-key add -
+sudo apt-get update"
+
+# install PostgreSQL $version
+sudo su - root -c "apt-get -y install postgresql-$version"
+
+# install development libs
+sudo su - root -c "apt-get -y install libpq-dev"
+
+# install pgpool2 Lib
+sudo su - root -c "apt-get -y install postgresql-$version-pgpool2"
+
+# To uninstall,
+# 	shell> sudo su - root -c "apt-get autoremove postgresql-$version"
+#	shell> sudo su - root -c "apt-get purge postgresql-$version"
+
+cluster='main'
+port='5432'
+
+# the automatically created cluster `main` is only listening to local connections
+sudo su - postgres -c "pg_dropcluster --stop $version $cluster"
+
+$basedir/create_primary_cluster $version $cluster $port
+$basedir/start_and_configure $version $cluster $port
+
+# database creation is handled by the pgpool instance 

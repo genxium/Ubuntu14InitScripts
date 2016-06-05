@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo su - root -c "sysctl -w net.ipv4.ip_forward=1"
+sudo su - root -c "sysctl -p"

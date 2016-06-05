@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo su - root -c "service openvpn stop"

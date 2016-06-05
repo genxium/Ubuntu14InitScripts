@@ -1,0 +1,65 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+	echo "Usage: $0 <server addr> <a valid client name>"
+	exit 1
+fi
+
+serveraddr=$1
+clientname=$2
+easyrsabasedir=/etc/openvpn/easy-rsa
+keysbasedir=$easyrsabasedir/keys
+
+# pack all docs into one .ovpn file
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+filepath="$basedir/$clientname.ovpn"
+certcontent=''
+
+function extractcert() {
+        OLDIFS=$IFS    
+        IFS=$'\n'
+        rawcontent=$1
+    
+        RECITING=0
+        ret=''
+        for line in $rawcontent
+        do  
+                if [ $RECITING -eq 1 ]; then
+                        certcontent=$certcontent$'\n'$line
+                fi  
+                if [[ $line =~ 'BEGIN CERTIFICATE' ]]; then
+                        RECITING=1
+                        certcontent=$line
+                fi  
+                if [[ $line =~ 'END CERTIFICATE' ]]; then
+                        break
+                fi    
+        done 
+        IFS=$OLDIFS
+}
+
+rawcontent=$(sudo su - root -c "cat $keysbasedir/$clientname.crt")
+extractcert "$rawcontent" # mind the double quote
+
+sudo su - root -c "\
+	printf \"client\n\" > $filepath && \
+	printf \"dev tun\n\" >> $filepath && \
+	printf \"proto udp\n\" >> $filepath && \
+	printf \"remote $serveraddr 1194\n\" >> $filepath && \
+	printf \"resolv-retry infinite\n\" >> $filepath && \
+	printf \"ns-cert-type server\n\" >> $filepath && \
+	printf \"nobind\n\" >> $filepath && \
+	printf \"persist-key\n\" >> $filepath && \
+	printf \"persist-tun\n\" >> $filepath && \
+	printf \"comp-lzo\n\" >> $filepath && \
+	printf \"verb 3\n\" >> $filepath && \
+	printf \"<ca>\n\" >> $filepath && \
+	cat $keysbasedir/ca.crt >> $filepath && \
+	printf \"</ca>\n\" >> $filepath && \
+	printf \"<cert>\n\" >> $filepath && \
+	echo \"$certcontent\" >> $filepath && \
+	printf \"</cert>\n\" >> $filepath && \
+	printf \"<key>\n\" >> $filepath && \
+	cat $keysbasedir/$clientname.key >> $filepath && \
+	printf \"</key>\n\" >> $filepath \
+"

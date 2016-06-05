@@ -1,0 +1,5 @@
+#!/bin/bash
+
+easyrsabasedir=/etc/openvpn/easy-rsa
+keysbasedir=$easyrsabasedir/keys
+sudo su - root -c "cd $easyrsabasedir && source $easyrsabasedir/vars && $easyrsabasedir/clean-all && $easyrsabasedir/build-ca && $easyrsabasedir/build-key-server server && $easyrsabasedir/build-dh && cp $keysbasedir/dh*.pem $keysbasedir/ca.crt $keysbasedir/server.* /etc/openvpn"

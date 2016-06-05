@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+	echo "Usage: $0 <server addr> <a unique client name>"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+serveraddr=$1
+clientname=$2
+easyrsabasedir=/etc/openvpn/easy-rsa
+keysbasedir=$easyrsabasedir/keys
+sudo su root -c "cd $easyrsabasedir && source $easyrsabasedir/vars && $easyrsabasedir/build-key $clientname"
+sudo su - root -c "$basedir/assemble_client_ovpn $serveraddr $clientname"

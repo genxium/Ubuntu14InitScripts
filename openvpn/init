@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Reference https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "ufw allow ssh"
+sudo su - root -c "ufw allow 1194/udp"
+
+sudo su - root -c "cat $basedir/openvpn_default_template > /etc/default/ufw"
+
+sudo su - root -c "cat $basedir/openvpn_before_template_for_nat.rules > /etc/ufw/before.rules"
+
+sudo su - root -c "ufw enable"
+
+# To check active firewall rules,
+#	shell> ufw status  
+
+sudo su - root -c "apt-get install openvpn easy-rsa"
+
+sudo su - root -c "cat $basedir/server_template.conf > /etc/openvpn/server.conf"
+
+sudo su - root -c "cp -r /usr/share/easy-rsa/ /etc/openvpn"
+
+sudo su - root -c "mkdir -p /etc/openvpn/easy-rsa/keys"
+
+sudo su - root -c "$basedir/enable_ipv4_forwarding"

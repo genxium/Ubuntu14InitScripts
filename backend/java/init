@@ -1,5 +1,11 @@
 #!/bin/bash
 
-# install openjdk 1.7.0
-sudo su - root -c "apt-get -y install openjdk-7-jdk"
+# install openjdk 1.8.0
+sudo su - root -c "add-apt-repository ppa:openjdk-r/ppa"
+sudo su - root -c "apt-get update"
+sudo su - root -c "apt-get -y install openjdk-8-jdk"
+
+# update default java binaries
+sudo su - root -c "update-alternatives --config java"
+sudo su - root -c "update-alternatives --config javac"
 

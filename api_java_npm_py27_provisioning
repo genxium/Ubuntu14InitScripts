@@ -2,6 +2,9 @@
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+# Update ulimits
+$basedir/ulimits/init
+
 # Install node 
 sudo su - root -c "$basedir/backend/node/init"
 

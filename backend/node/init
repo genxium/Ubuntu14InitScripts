@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # install nodejs 6, reference https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+sudo su - root -c "apt-get install curl"
 sudo su - root -c "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
 sudo su - root -c "apt-get install -y nodejs"
 sudo su - root -c "apt-get install -y nodejs-legacy"

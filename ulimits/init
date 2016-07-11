@@ -1,0 +1,8 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+
+sudo su - root -c "cat $basedir/common-session_template > /etc/pam.d/common-session"
+
+sudo su - root -c "cat $basedir/limits_template.conf > /etc/security/limits.conf"

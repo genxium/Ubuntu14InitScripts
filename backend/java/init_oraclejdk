@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# install oraclejdk 1.8.0
+sudo su - root -c "apt-get install software-properties-common"
+sudo su - root -c "add-apt-repository ppa:webupd8team/java"
+sudo su - root -c "apt-get update"
+sudo su - root -c "apt-get -y install oracle-java8-installer"
+
+# update default java binaries
+sudo su - root -c "update-alternatives --config java"
+sudo su - root -c "update-alternatives --config javac"
+

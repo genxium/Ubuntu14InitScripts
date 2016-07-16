@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo su - root -c "tail -f /var/log/ejabberd/ejabberd.log /var/log/ejabberd/ejabberd.log"

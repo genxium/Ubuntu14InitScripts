@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo su - root -c "service ejabberd stop"
+sudo su - root -c "killall beam"
+sudo su - root -c "killall epmd"

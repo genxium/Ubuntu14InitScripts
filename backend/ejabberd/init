@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+	echo "Usage: $0 <hostname>"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+hostname=$1
+
+sudo su - root -c "apt-get install ejabberd"
+$basedir/kill_ejabberd_associated_processes
+sudo su - root -c "cat $basedir/ejabberd_template.cfg | sed s/to_be_replaced_hostname/$hostname/ > /etc/ejabberd/ejabberd.cfg"
+sudo su - root -c "cat $basedir/ejabberdctl_template.cfg > /etc/default/ejabberd"

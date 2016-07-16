@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then 
+	echo "Usage: $0 <username domain/host> <st> <ed>"
+	exit 1
+fi
+
+
+domain=$1
+st=$2
+ed=$3
+password="password"
+for i in `seq $st 1 $ed`
+	do
+		uname="test_$i"	
+		sudo su - root -c "ejabberdctl register $uname $domain $password"
+	done

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -ne 4 ]; then
+	echo "Usage: $0 <host/domain> <st> <ed> <interval>"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+mkdir -p $basedir/pure_conn_configs
+
+host=$1
+st=$2
+ed=$3
+interval=$4
+
+for i in `seq $st $interval $ed`
+	do
+		edi=$(( $i+$interval-1 ))
+		fpath=$basedir/pure_conn_configs/${i}_${edi}.xml
+		echo $fpath
+		cat $basedir/pure_conn_config_template.xml | sed s/to_be_replaced_from/$i/ | sed s/to_be_replaced_to/$edi/ | sed s/to_be_replaced_hostname/$host/ > $fpath 
+	done

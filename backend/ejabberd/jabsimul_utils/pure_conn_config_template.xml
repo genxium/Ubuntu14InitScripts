@@ -1,0 +1,32 @@
+<dpsm>
+
+  <events_after>1</events_after>
+
+  <user_names_generator>
+    <range>
+      <from>to_be_replaced_from</from>
+      <to>to_be_replaced_to</to>
+    </range>
+    <name>test_%(num:u)</name>
+    <server>to_be_replaced_hostname</server>
+  </user_names_generator>
+
+  <user_properities>
+    <filter><name>test_.*</name></filter>
+    <properities>
+     <fullname>test%(num*2:u)-%(3+num%1200000/(1+3)+7:u)</fullname>
+      <password>password</password>
+      <resource>stressingser</resource>
+      <Xhost>localhostserver</Xhost>
+      <sniff>/tmp</sniff>
+
+      <event>
+        <name>connect</name>
+        <frequency>3000000</frequency>
+        <counter>60</counter>
+        <digest/>
+      </event>
+
+    </properities>
+  </user_properities>
+</dpsm>

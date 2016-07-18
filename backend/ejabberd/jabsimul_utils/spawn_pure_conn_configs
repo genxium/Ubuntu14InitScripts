@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Please put this script to the same dir where the `jab_simul` binary locates!
+
 if [ $# -ne 4 ]; then
 	echo "Usage: $0 <host/domain> <st> <ed> <interval>"
 	exit 1

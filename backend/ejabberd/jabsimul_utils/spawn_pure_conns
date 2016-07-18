@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Please put this script to the same dir where the `jab_simul` binary locates!
+
+if [ $# -ne 0 ]; then
+	echo "Usage: $0"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+configs_dir="$basedir/pure_conn_configs"
+all_config_files=`find $configs_dir -name "*.xml" -type f`
+
+for f in $all_config_files
+do
+	$basedir/jab_simul $f >/dev/null 2>&1 & 
+done

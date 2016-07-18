@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then 
+	echo "Usage: $0 <min local port #> <max local port #>"
+	exit 1
+fi
+
+min_local_port=$1
+max_local_port=$2
+
+sudo su - root -c "sysctl -w net.ipv4.ip_local_port_range=\"$1 $2\""
+sudo su - root -c "sysctl -p"

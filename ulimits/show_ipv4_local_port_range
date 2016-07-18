@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo su - root -c "sysctl net.ipv4.ip_local_port_range"

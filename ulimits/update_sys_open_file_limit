@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+	echo "Usage: $0 <expected sys open file limit>"
+	exit 1
+fi
+
+expected_limit=$1
+
+sudo su - root -c "echo $expected_limit > /proc/sys/fs/file-max"

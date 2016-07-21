@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sudo su - root -c "ejabberdctl stop"
+sudo su - root -c "killall epmd"

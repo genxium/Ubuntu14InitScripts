@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+	echo "Usage: $0 <hostname>"
+	exit 1
+fi
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+hostname=$1
+
+$basedir/install_erlang
+$basedir/install_ejabberd
+$basedir/kill_ejabberd_associated_processes
+sudo su - root -c "cat $basedir/ejabberd_template.yml | sed s/to_be_replaced_hostname/$hostname/ > /etc/ejabberd/ejabberd.yml"
+sudo su - root -c "cat $basedir/ejabberdctl_template.cfg > /etc/ejabberd/ejabberdctl.cfg"

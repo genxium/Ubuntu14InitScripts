@@ -1,6 +1,0 @@
-#!/bin/bash
-
-sudo su - root -c "apt-get remove ejabberd"
-sudo su - root -c "apt-get purge ejabberd"
-sudo su - root -c "apt-get autoremove"
-

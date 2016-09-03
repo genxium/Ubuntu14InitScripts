@@ -1,0 +1,1 @@
+sudo su - root -c "service mongod start"

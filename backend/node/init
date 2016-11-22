@@ -8,6 +8,3 @@ sudo su - root -c "apt-get install -y nodejs-legacy"
 
 # install build tools
 sudo su - root -c "apt-get install -y build-essential"
-
-# install less 
-sudo su - root -c "npm install -g less"

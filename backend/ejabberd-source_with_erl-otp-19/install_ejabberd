@@ -1,5 +1,7 @@
 #!/bin/bash
 
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 sudo su - root -c "apt-get -y install autotools-dev"
 sudo su - root -c "apt-get -y install autoconf"
 sudo su - root -c "apt-get -y install libyaml-dev"
@@ -8,3 +10,5 @@ sudo su - root -c "git clone https://github.com/processone/ejabberd ejabberd"
 
 # If an older version was previously installed from source, then go to the configured source and run `make uninstall; make clean;` to cleanup first.  
 sudo su - root -c "cd ejabberd; ./autogen.sh; ./configure; make; make install;"
+
+# sudo su - root -c "rm -rf ejabberd"

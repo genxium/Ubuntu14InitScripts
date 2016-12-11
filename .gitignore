@@ -1,3 +1,7 @@
+*.swp
+*.tar
+*.gz
+*.zip
 *.bak
 *.log
 *.ovpn

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo su - root -c "postmap /etc/postfix/stunnel_passwd"
+sudo su - root -c "/etc/init.d/postfix restart"
+
+sudo su - root -c "kill $(ps aux | grep 'stunnel$' | awk '{print $2}')"
+sudo su - root -c "stunnel"

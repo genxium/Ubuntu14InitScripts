@@ -7,3 +7,6 @@
 *.ovpn
 backend/ejabberd/jabsimul_utils/pure_conn_configs
 backend/ejabberd/jabsimul_utils/pure_conn_configs/*
+smtp/*.pem
+smtp/*.crt
+smtp/*.crt

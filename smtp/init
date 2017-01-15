@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ $# -ne 3 ]; then
+  echo "Usage: $0 <domain.name of the machine under configuration, e.g. mydomain.com> <domain.name of relay-host, e.g. smtp.mxhichina.com> <relay-port, e.g. 465>"
+  exit 1
+fi
+
+domainname=$1
+relayhost=$2
+relayport=$3
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+sudo su - root -c "apt-get install openssl"
+sudo su - root -c "apt-get install stunnel"
+sudo su - root -c "apt-get install libsasl2-2 sasl2-bin libsasl2-modules"
+sudo su - root -c "apt-get install postfix"
+
+sudo su - root -c "cat $basedir/postfix_conf/main.cf.template | sed s/ToBeReplacedHostname/$domainname/g > /etc/postfix/main.cf"
+
+## Configure stunnel.
+sudo su - root -c "cat $basedir/stunnel_conf/stunnel.conf.template | sed s/ToBeReplacedRelayHost/$relayhost/g | sed s/ToBeReplacedRelayPort/$relayport/g > /etc/stunnel/stunnel.conf"
+
+## Generate custom smtp public-key crypto infrastructure.
+sudo su - root -c "touch $basedir/smtpd.key"
+sudo su - root -c "chmod $basedir/smtpd.key"
+sudo su - root -c "openssl genrsa 1024 > $basedir/smtpd.key"
+sudo su - root -c "openssl req -new -key $basedir/smtpd.key -x509 -days 3650 -out $basedir/smtpd.crt"
+sudo su - root -c "openssl req -nodes -x509 -newkey rsa:4096 -keyout $basedir/cakey.pem -out $basedir/cacert.pem -days 3650" # A no-passphrase variation.
+sudo su - root -c "mv $basedir/smtpd.key /etc/ssl/private/"
+sudo su - root -c "mv $basedir/smtpd.crt /etc/ssl/certs/"
+sudo su - root -c "mv $basedir/cakey.pem /etc/ssl/private/"
+sudo su - root -c "mv $basedir/cacert.pem /etc/ssl/certs/"
+
+echo ''
+echo 'To test, install mailutils and try echo "Test mail from postfix" | mail -s "Test Postfix" -a "From: yourname@yoursmtp.provider.domain.name" receipientname@somedomain.name. For example, "yourname@yoursmtp.provider.domain.name" could be tom@thecompany.name.org where "thecompany.name.org" might be different from your relay-host for enterprise email providers. To check the mail queue use "mailq", to delete all mails in the queue use "postsuper -d ALL".'

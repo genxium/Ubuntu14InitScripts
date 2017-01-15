@@ -1,0 +1,16 @@
+foreground = no
+
+# Use custom pki files, required in server-mode.
+##cert = /etc/ssl/certs/cacert.pem
+##key = /etc/ssl/private/cakey.pem
+
+debug = 6 # Lower this value if too verbose.
+output = /var/log/stunnel.log
+
+[smtp-tls-wrapper]
+client = yes
+verify = 2
+accept = 11125
+connect = ToBeReplacedRelayHost:ToBeReplacedRelayPort
+CApath = /etc/ssl/certs/
+checkHost = ToBeReplacedRelayHost 

@@ -8,6 +8,7 @@ set noerrorbells
 set tabstop=8
 set shiftwidth=8
 set encoding=utf-8
+set expandtab
 
 silent! call pathogen#infect()
 silent! call pathogen#helptags()

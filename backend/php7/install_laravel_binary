@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Please note that this script is intentionally written for "current OS user".
+
+# This is a workaround.
+sudo chown -R $USER:$USER $HOME/.composer
+sudo chmod -R 755 $HOME/.composer
+
+# Reference https://laravel.com/docs/5.4#installing-laravel.
+# Note that you can't and shouldn't run this script as superuser/root. Safety reference https://getcomposer.org/doc/faqs/how-to-install-untrusted-packages-safely.md.
+
+# To use a Chinese network friendly mirror. Reference https://pkg.phpcomposer.com 
+composer config -g repo.packagist composer https://packagist.phpcomposer.com 
+
+# To recover use of default packagist. 
+# composer config -g repo.packagist composer https://packagist.org 
+
+composer --no-plugins --no-scripts global require "laravel/installer"
+
+echo "Please append\n\n\texport PATH=\$PATH:\$HOME/.composer/vendor/bin\n\nto $HOME/.bashrc and execute\n\n\tsource $HOME/.bashrc\n\nbefore using the 'laravel' binary."

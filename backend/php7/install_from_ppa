@@ -1,0 +1,17 @@
+#!/bin/sh
+sudo su - root -c "apt-get install python-software-properties"
+sudo su - root -c "add-apt-repository ppa:ondrej/php"
+sudo su - root -c "apt-get update"
+
+toPurgeVer=5
+sudo su - root -c "apt-get -y purge php$toPurgeVer libapache2-mod-php$toPurgeVer php$toPurgeVer php$toPurgeVer-cli php$toPurgeVer-common php$toPurgeVer-curl php$toPurgeVer-gd php$toPurgeVer-imap php$toPurgeVer-intl php$toPurgeVer-json php$toPurgeVer-mcrypt php$toPurgeVer-mysql php$toPurgeVer-pspell php$toPurgeVer-readline php$toPurgeVer-sqlite php$toPurgeVer-opcache"
+
+ver=7.0
+
+sudo su - root -c "apt-get install php$ver"
+
+# Install fpm.
+sudo su - root -c "apt-get install php$ver-fpm"
+
+# Update MySQL binding.
+sudo su - root -c "apt-get install php$ver-mysql"

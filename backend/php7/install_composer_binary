@@ -1,0 +1,16 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# Please note that this script is intentionally written for "current OS user".
+sudo apt-get install zlibc
+
+# Reference https://getcomposer.org/download/.
+setupFilePath=$basedir/composer-setup.php
+
+php -r "copy('https://getcomposer.org/installer', '$setupFilePath');"
+php -r "if (hash_file('SHA384', '$setupFilePath') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('$setupFilePath'); } echo PHP_EOL;"
+sudo php $setupFilePath --install-dir=/usr/local/bin --filename=composer 
+php -r "unlink('$setupFilePath');"
+
+mkdir -p $HOME/.composer/vendor/bin

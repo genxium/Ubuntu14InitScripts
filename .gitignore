@@ -10,3 +10,5 @@ backend/ejabberd/jabsimul_utils/pure_conn_configs/*
 smtp/*.pem
 smtp/*.crt
 smtp/*.crt
+composer-setup.php
+composer-temp.phar

@@ -17,4 +17,9 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 
 composer --no-plugins --no-scripts global require "laravel/installer"
 
+# Install ZIP extension. 
+ver=7.0
+sudo su - root -c "apt-get install php$ver-mbstring"
+sudo su - root -c "apt-get install php$ver-dom"
+
 echo "Please append\n\n\texport PATH=\$PATH:\$HOME/.composer/vendor/bin\n\nto $HOME/.bashrc and execute\n\n\tsource $HOME/.bashrc\n\nbefore using the 'laravel' binary."

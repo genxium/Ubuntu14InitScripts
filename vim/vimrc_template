@@ -13,4 +13,6 @@ set expandtab
 silent! call pathogen#infect()
 silent! call pathogen#helptags()
 
+set secure exrc
+
 " Don't apply `set expandtab` for the convenience of Makefile formatting 

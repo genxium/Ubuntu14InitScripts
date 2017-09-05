@@ -1,0 +1,5 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+git clone https://github.com/StanAngeloff/php.vim ~/.vim/bundle/php.vim

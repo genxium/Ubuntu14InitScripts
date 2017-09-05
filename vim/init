@@ -10,8 +10,3 @@ curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
 # initialize vimrc globally
 sudo su - root -c "cat $basedir/vimrc_template > /etc/vim/vimrc"
-
-sudo su - root -c "$basedir/../backend/node/init"
-$basedir/install_jshint_plugin
-$basedir/install_esformatter
-$basedir/install_vim_node

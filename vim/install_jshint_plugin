@@ -2,7 +2,7 @@
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-# sudo su - root -c "$basedir/../backend/node/init"
+sudo su - root -c "$basedir/../backend/node/init"
 
 sudo su - root -c "npm install -g jshint"
 

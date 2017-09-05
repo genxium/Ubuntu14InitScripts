@@ -1,10 +1,18 @@
 #!/bin/bash
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ppaVer=0.8.7-1
+cd $basedir && wget https://repo.mysql.com/mysql-apt-config_$ppaVer_all.deb
+sudo dpkg -i $basedir/mysql-apt-config_$ppaVer_all.deb
 
-sudo su - root -c "apt-get -y install mysql-server-5.6"
+sudo su - root -c "apt-get update"
+sudo su - root -c "apt-get -y install mysql-server"
 
-sudo su - root -c "mysql_install_db --user=mysql --ldata=/var/lib/mysql"
+echo "\nRemoving password for MySQL user \"root@localhost\", please enter your old password for it.\n"
+mysql -uroot -p -e "SET PASSWORD FOR root@localhost=PASSWORD('');"
+
+# Reference https://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html. 
+sudo su - root -c "mysqld --initialize --user=mysql --datadir=/var/lib/mysql"
 sudo su - root -c "cat $basedir/mysqld_template.conf > /etc/my.cnf"
 
 sudo su - root -c "$basedir/start"

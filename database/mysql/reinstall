@@ -1,21 +1,31 @@
 #!/bin/bash
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+$basedir/uninstall
+
 ppaVer=0.8.7-1
-cd $basedir && wget https://repo.mysql.com/mysql-apt-config_$ppaVer_all.deb
-sudo dpkg -i $basedir/mysql-apt-config_$ppaVer_all.deb
+debFilename=mysql-apt-config_"$ppaVer"_all.deb
+debURI=https://repo.mysql.com/$debFilename
+cd $basedir && wget $debURI
+sudo dpkg -i $basedir/$debFilename
 
 sudo su - root -c "apt-get update"
 sudo su - root -c "apt-get -y install mysql-server"
 
-echo "\nRemoving password for MySQL user \"root@localhost\", please enter your old password for it.\n"
+printf "\nRemoving password for MySQL user \"root@localhost\", please enter your old password for it.\n"
 mysql -uroot -p -e "SET PASSWORD FOR root@localhost=PASSWORD('');"
 
-# Reference https://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html. 
-sudo su - root -c "mysqld --initialize --user=mysql --datadir=/var/lib/mysql"
-sudo su - root -c "cat $basedir/mysqld_template.conf > /etc/my.cnf"
+sudo su - $mysqlOsUser -c "mysql_upgrade"
 
-sudo su - root -c "$basedir/start"
+# Reference https://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html. 
+mysqlOsUser=mysql
+mysqlOsGroup=mysql
+
+logFilepath="/var/log/mysqld.log"
+sudo su - root -c "touch $logFilepath"
+sudo su - root -c "chown -R $mysqlOsUser:$mysqlOsGroup $logFilepath"
+sudo su - root -c "chmod -R 774 $logFilepath"
 
 # wait for mysqld starting up
 sudo su - root -c "sleep 5"

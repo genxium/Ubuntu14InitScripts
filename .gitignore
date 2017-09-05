@@ -13,3 +13,4 @@ smtp/*.crt
 composer-setup.php
 composer-temp.phar
 *.deb
+*.deb.*

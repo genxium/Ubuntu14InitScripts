@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Reference https://www.nginx.com/resources/wiki/start/topics/tutorials/install/
+
+nginx=stable # use nginx=development for latest development version
+sudo su - root -c "add-apt-repository ppa:nginx/$nginx"
+
+sudo su - root -c "apt-get -y update"

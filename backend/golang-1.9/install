@@ -1,0 +1,9 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+$basedir/init_ppa
+
+sudo apt-get install golang-1.9-go
+
+printf "\nPlease run\n\n###########################\nsource $basedir/setenv\n###########################\n\nto set the \$PATH environment variable.\n\n"

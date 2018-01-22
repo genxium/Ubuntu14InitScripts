@@ -1,0 +1,10 @@
+#!/bin/bash
+
+GO_BIN_PATH="/usr/lib/go-1.9/bin"
+
+# Check against padded $PATH.
+[[ ":$PATH:" != *":${GO_BIN_PATH}:"* ]] && NEW_PATH="${GO_BIN_PATH}:${PATH}"
+
+echo "New value for \$PATH is now $NEW_PATH."
+
+export PATH=$NEW_PATH

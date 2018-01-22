@@ -8,6 +8,7 @@ sudo su - root -c "apt-get -y install autoconf"
 sudo su - root -c "apt-get -y install libncurses-dev"
 sudo su - root -c "apt-get -y install libxml2 libxml2-dev"
 sudo su - root -c "apt-get -y install libxslt1.1"
+sudo su - root -c "apt-get -y install libssl-dev"
 
 version=19.1
 sudo su - root -c "curl -o $basedir/otp_src_$version.tar.gz http://erlang.org/download/otp_src_$version.tar.gz";

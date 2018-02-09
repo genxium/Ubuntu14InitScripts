@@ -1,5 +1,5 @@
 Other than using the `webupd8team PPA` for installing Oracle JDK, one can also 
-- Download jdk8 tarball from official source, e.g. [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](). 
+- Download jdk8 tarball from official source, e.g. [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). 
 - Untar the tarball, e.g. "jdk-8u162-linux-x64.tar.gz".
   ```
   root@shell> tar -xvf  /absolute/path/to/jdk-8u162-linux-x64.tar.gz
@@ -14,9 +14,9 @@ Other than using the `webupd8team PPA` for installing Oracle JDK, one can also
   ```
   root@shell>  update-alternatives --config java
   ```
-- to view syntax details
+- _OPTIONAL_ To view syntax details.
   ```
   root@shell> man update-alternatives
   ```
-- (OPTIONAL) Try `ls -l /usr/bin/java` and then `ls -l /etc/alternatives/java` to see why it works!
-- (OPTIONAL) Repeat similar procedures for "javac", "javah" and "javap" etc. when necessary. 
+- _OPTIONAL_ Try `ls -l /usr/bin/java` and then `ls -l /etc/alternatives/java` to see why it works on Ubuntu14.04.
+- _OPTIONAL_ Repeat similar procedures for "javac", "javah" and "javap" etc. when necessary. 

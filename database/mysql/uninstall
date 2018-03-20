@@ -6,5 +6,7 @@
 # sudo su - root -c "apt-get remove --purge mysql-common"
 # ``` 
 sudo su - root -c "apt-get remove --purge mysql-common mysql-client mysql-community-client mysql-server mysql-community-server"
+sudo su - root -c "rm -rf /etc/mysql"
+sudo su - root -c "rm -rf /etc/my.cnf"
 sudo su - root -c "apt-get autoremove"
 sudo su - root -c "apt-get autoclean"

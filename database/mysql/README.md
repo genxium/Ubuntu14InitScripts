@@ -12,11 +12,20 @@ mysql> SHOW GRANTS for 'foo';
 
 ## 2.2 Grant rw access to database named 'sigma' by user 'foo' from remote IPv4 addr  
 
-user@subproj-root> ./grant_read_write sigma 'foo' 'bar1.bar2.bar3.bar4' 
+user@subproj-root> ./grant_read_write sigma foo bar1.bar2.bar3.bar4 
 
 ## 2.3 Revoke rw access to database named 'sigma' by user 'foo' from remote IPv4 addr  
 
-user@subproj-root> ./revoke_read_write sigma 'foo' 'bar1.bar2.bar3.bar4' 
+user@subproj-root> ./revoke_read_write sigma foo bar1.bar2.bar3.bar4 
+
+## 2.4 Make sure that in the major config file for mysqld, there is no `bind-address` or `skip-network` constraints 
+
+For example under `/etc/mysql`, you should NOT have any of the followings that prevents remote access.
+
+```
+bind-address           = 127.0.0.1
+skip-networking
+```
 
 # 3. Access constraints imposed on the OS by other processes 
 

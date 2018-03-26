@@ -9,4 +9,11 @@ dbname=$1
 user=$2
 addr=$3
 
-mysql -uroot -e "GRANT SELECT ON $dbname.* TO $user@$addr;" 
+cmd="GRANT SELECT ON "
+cmd+=$dbname
+cmd+=".* TO '"
+cmd+=$user
+cmd+="'@'"
+cmd+=$addr
+cmd+="';"
+mysql -v -uroot -e "$cmd"

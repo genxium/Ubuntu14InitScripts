@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then 
+	echo "Usage: $0 <mysql user> <IP or FQDN>"
+	exit 1
+fi
+
+user=$1
+addr=$2
+
+cmd="SHOW GRANTS FOR '"
+cmd+=$user
+cmd+="'@'"
+cmd+=$addr
+cmd+="';"
+mysql -v -uroot -e "$cmd" 

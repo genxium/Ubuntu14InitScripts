@@ -9,4 +9,11 @@ dbname=$1
 user=$2
 addr=$3
 
-mysql -uroot -e "REVOKE ALL PRIVILEGES ON $dbname.* FROM $user@$addr;" 
+cmd="REVOKE ALL PRIVILEGES ON "
+cmd+=$dbname
+cmd+=".* FROM '"
+cmd+=$user
+cmd+="'@'"
+cmd+=$addr
+cmd+="';"
+mysql -v -uroot -e "$cmd" 

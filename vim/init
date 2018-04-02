@@ -2,11 +2,13 @@
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+# Install "vim" globally. 
 sudo su - root -c "apt-get -y install vim"
 
-# install pathogen 
+# Initialize "~/.vimrc" for the current OS user.
+sudo cat $basedir/vimrc_template > ~/.vimrc
+
+# Install "pathogen" for the current OS user. 
 mkdir -p ~/.vim/autoload ~/.vim/bundle 
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 
-# initialize vimrc globally
-sudo su - root -c "cat $basedir/vimrc_template > /etc/vim/vimrc"

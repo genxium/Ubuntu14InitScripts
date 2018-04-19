@@ -3,4 +3,4 @@
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
 
 # Reference https://nodejs.org/en/download/package-manager/#nvm.
-# Use `nvm` commands, e.g. `npm install 8` or `npm uninstall 8` for management.
+# Use `nvm` commands, e.g. `nvm install 9` or `nvm uninstall 9` for management.

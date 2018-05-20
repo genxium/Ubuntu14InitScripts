@@ -1,9 +1,15 @@
 #!/bin/bash
 
+if [ $# -ne 1 ]; then 
+  echo "Usage: $0 <version, e.g. \"1.9\", \"1.10\">"
+  exit 1
+fi
+
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+version=$1
 
 $basedir/init_ppa
 
-sudo apt-get install -y --force-yes golang-1.9-go
+sudo apt-get install -y --force-yes golang-$version-go
 
 printf "\nPlease run\n\n###########################\nsource $basedir/setenv\n###########################\n\nto set the \$PATH environment variable.\n\n"

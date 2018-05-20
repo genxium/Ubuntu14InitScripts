@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+  echo "Usage: $0 <version, e.g. \"1.9\", \"1.10\">"
+  exit 1
+fi
+
+version=$1
+
+sudo apt-get remove golang
+sudo apt-get remove golang-$version-go
+sudo apt-get autoremove
+sudo apt-get purge 
+

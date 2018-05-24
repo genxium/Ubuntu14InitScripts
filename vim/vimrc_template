@@ -7,6 +7,7 @@ set tabstop=8
 set shiftwidth=8
 set encoding=utf-8
 set expandtab
+set fileformat=unix
 
 set backspace=indent,eol,start
 

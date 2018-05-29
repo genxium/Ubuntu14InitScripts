@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then 
+  echo "Usage: $0 </path/to/folder>"
+  exit 1
+fi
+
+pathToFolder=$1
+find $pathToFolder -type f -print0 | xargs -0 -n 1 -P 4 fromdos 
+
+

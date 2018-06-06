@@ -11,7 +11,7 @@ cd $basedir && wget $debURI
 sudo dpkg -i $basedir/$debFilename
 
 sudo su - root -c "apt-get update"
-sudo su - root -c "apt-get -y install mysql-server"
+sudo su - root -c "apt-get -y --force-yes install mysql-server"
 
 # Reference https://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html. 
 mysqlOsUser=mysql

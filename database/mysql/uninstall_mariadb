@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sudo su - root -c "apt-get remove --purge mariadb-common mariadb-server mariadb-*"
+sudo su - root -c "rm -rf /var/lib/mysql"
+sudo su - root -c "rm -rf /etc/mysql"
+sudo su - root -c "rm -rf /etc/my.cnf"
+sudo su - root -c "apt-get autoremove"

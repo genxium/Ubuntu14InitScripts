@@ -1,0 +1,40 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+$basedir/uninstall_mariadb
+printf "Removed previous installation of mariadb if exists.\n"
+
+ver=10.3
+
+# Reference https://downloads.mariadb.org/mariadb/repositories/#mirror=tuna&distro=Ubuntu&distro_release=trusty--ubuntu_trusty&version=10.3
+sudo apt-get install software-properties-common 
+sudo apt-key adv --recv-keys -keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db 
+sudo add-apt-repository "deb [arch=amd64,i386,ppc64el] http://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/$ver/ubuntu trusty main"
+
+sudo apt-get update
+sudo apt-get -y --force-yes install mariadb-server
+
+mysqlOsUser=mysql
+mysqlOsGroup=mysql
+
+sudo su - root -c "$basedir/stop"
+# wait for mysqld to fully stop
+sudo su - root -c "sleep 5"
+
+defaultConfigDir=/etc/mysql
+sudo su - root -c "mkdir -p $defaultConfigDir"
+sudo su - root -c "touch $defaultConfigDir/my.cnf"
+sudo su - root -c "echo \"!include /etc/mysql/mariadb.cnf\" > \"$defaultConfigDir/my.cnf\""
+# set ownership, mod and gid
+sudo su - root -c "chown -R $mysqlOsUser:$mysqlOsGroup $defaultConfigDir"
+sudo su - root -c "chmod -R 775 $defaultConfigDir"
+sudo su - root -c "chmod -R g+s $defaultConfigDir"
+
+sudo su - root -c "$basedir/start"
+
+# wait for mysqld starting up
+sudo su - root -c "sleep 5"
+
+printf "\nRemoving password for MySQL user \"root@localhost\", please enter your old password for it.\n"
+mysql -uroot -p -e "SET PASSWORD FOR root@localhost=PASSWORD('');"

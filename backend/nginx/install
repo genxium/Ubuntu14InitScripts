@@ -3,6 +3,7 @@
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 sudo su - root -c "apt-get install -y --force-yes nginx"
+sudo su - root -c "mkdir -p /etc/nginx/vhost"
 sudo su - root -c "cat $basedir/nginx_template.conf > /etc/nginx/nginx.conf"
 sudo su - root -c "service nginx restart"
 

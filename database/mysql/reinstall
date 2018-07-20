@@ -4,7 +4,8 @@ basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 $basedir/uninstall
 
-ppaVer=0.8.9-1
+# Reference https://dev.mysql.com/downloads/repo/apt/.
+ppaVer=0.8.10-1
 debFilename=mysql-apt-config_"$ppaVer"_all.deb
 debURI=https://repo.mysql.com/$debFilename
 cd $basedir && wget $debURI

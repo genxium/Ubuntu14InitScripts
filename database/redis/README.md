@@ -5,7 +5,7 @@ root@~> iptables -L --line-number -v -n -t filter
 ```
 
 
-#To add rules that allow whitelisted access to redis-server 
+# To add rules that allow whitelisted access to redis-server 
 
 Mind that the order of rules is important.
 ```

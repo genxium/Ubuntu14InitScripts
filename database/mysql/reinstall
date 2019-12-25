@@ -44,5 +44,5 @@ mysql -uroot -e "CREATE USER 'rep'@'localhost'"
 dbname='test'
 mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $dbname"
 
-sudo su - root -c "$basedir/grant_read_write $dbname cu localhost"
-sudo su - root -c "$basedir/grant_read_only $dbname rep localhost"
+$cmdSudo su - root -c "$basedir/grant_read_write $dbname cu localhost"
+$cmdSudo su - root -c "$basedir/grant_read_only $dbname rep localhost"

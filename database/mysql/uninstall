@@ -1,12 +1,13 @@
 #!/bin/sh
+cmdSudo=
 
 # If a problem purging `mysql-common` is encountered, you might have to reinstall it before purging as shown below. 
 # ```
 # sudo su - root -c "apt-get install mysql-common"
 # sudo su - root -c "apt-get remove --purge mysql-common"
 # ``` 
-sudo su - root -c "apt-get remove --purge mysql-common mysql-client mysql-community-client mysql-server mysql-community-server"
-sudo su - root -c "rm -rf /etc/mysql"
-sudo su - root -c "rm -rf /etc/my.cnf"
-sudo su - root -c "apt-get autoremove"
-sudo su - root -c "apt-get autoclean"
+$cmdSudo su - root -c "apt-get remove --purge mysql-common mysql-client mysql-community-client mysql-server mysql-community-server"
+$cmdSudo su - root -c "rm -rf /etc/mysql"
+$cmdSudo su - root -c "rm -rf /etc/my.cnf"
+$cmdSudo su - root -c "apt-get autoremove"
+$cmdSudo su - root -c "apt-get autoclean"

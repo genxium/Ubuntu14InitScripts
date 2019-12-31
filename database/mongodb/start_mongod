@@ -1,1 +1,4 @@
-sudo su - root -c "service mongod start"
+#!/bin/bash
+
+#sudo su - root -c "service mongod start"
+sudo su - root -c "systemctl start mongod"

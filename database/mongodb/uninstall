@@ -1,0 +1,8 @@
+#!/bin/bash
+
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cmdSudo=
+
+$cmdSudo apt-get remove mongodb-org mongodb-org-server
+$cmdSudo apt-get purge mongodb-org mongodb-org-server
+$cmdSudo apt-get clean

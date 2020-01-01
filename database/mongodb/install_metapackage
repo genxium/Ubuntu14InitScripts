@@ -1,10 +1,11 @@
 #!/bin/bash
 
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cmdSudo=
 
-
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D68FA50FEA312927
+$cmdSudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+#$cmdSudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D68FA50FEA312927
 echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org
+$cmdSudo apt-get update
+$cmdSudo apt-get install -y mongodb-org
+#cmdSudo apt-get install -y mongodb-org-server # To install server only.

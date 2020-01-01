@@ -3,4 +3,5 @@
 basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 $cmdSudo=
 $cmdSudo su - root -c "cat $basedir/mongod_template_for_1604.service > /lib/systemd/system/mongod.service" 
+$cmdSudo systemctl enable mongod
 $cmdSudo systemctl daemon-reload

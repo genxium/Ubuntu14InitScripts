@@ -1,0 +1,7 @@
+#!/bin/bash
+cmdSudo=
+basedir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+$cmdSudo apt-get install zookeeper # Installs the CLI tools, e.g. "zooinspector", "zookeeper_import", "zookeeper_export".
+$cmdSudo apt-get install zookeeperd # Installs the daemon application and as a Debian service (recognized at /etc/init.d/zookeeper).
+

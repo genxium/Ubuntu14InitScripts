@@ -39,7 +39,7 @@ root> iptables -L -v [-t filter]
 
 and refer to https://wiki.centos.org/HowTos/Network/IPTables for details of operation.
 
-A possible rule like `INPUT --sport 3306 ... -j DROP` could be jamming remote access to a live MySQL server.  
+A possible rule like `INPUT --dport 3306 ... -j DROP` or `OUTPUT --sport 3306 ... -j DROP` could be jamming remote access to a live MySQL server.  
 
 ## 3.2 ufw
 

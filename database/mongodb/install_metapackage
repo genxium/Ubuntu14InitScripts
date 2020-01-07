@@ -8,4 +8,5 @@ $cmdSudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
 echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
 $cmdSudo apt-get update
 $cmdSudo apt-get install -y mongodb-org
+#$cmdSudo apt-get install --allow-unauthenticated -y mongodb-org # To install unauthenticated packages.
 #cmdSudo apt-get install -y mongodb-org-server # To install server only.

@@ -1,0 +1,3 @@
+#!/bin/bash
+cmdSudo=
+$cmdSudo apt-get install mysql-shell

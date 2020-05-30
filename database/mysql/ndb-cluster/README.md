@@ -1,6 +1,8 @@
 Using DockerImage https://hub.docker.com/r/mysql/mysql-cluster/ built from https://github.com/mysql/mysql-docker/tree/mysql-cluster.
 
-All "DockerContainer"s in this example will use "--net=host", such that `inter-process & inter-OS ipaddr routing` is handled by "DockerHostOS", as explained in https://github.com/genxium/Ubuntu14InitScripts/tree/master/database/mysql/docker-innodb-cluster.
+In practical use cases, all "DockerContainer"s are recommended to use "--net=host", such that `inter-process & inter-OS ipaddr routing` is handled by "DockerHostOS", as explained in https://github.com/genxium/Ubuntu14InitScripts/tree/master/database/mysql/docker-innodb-cluster.
+
+In this example however, we're constrained by https://github.com/mysql/mysql-docker/blob/mysql-cluster/7.6/cnf/mysql-cluster.cnf to use the "subnet 192.168.0.0/16".
 
 # To verify that we're using "instances of NDBEngine w/ `ndbd`"
 The following steps work whether or not each "DockerContainer" has a mounted volume. 

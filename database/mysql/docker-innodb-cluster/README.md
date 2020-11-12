@@ -46,3 +46,6 @@ upon calling
 mysqlsh> dba.createCluster(...)
 ```
 for verification if such "--report-host" were expected.
+
+# Setting up a pair of Master-Slave(Replica, Readonly) MySQL instances without MySQLShell 
+That'd require manual works, the most common use case would be to setup a slave/replica for a master instance with existing data.

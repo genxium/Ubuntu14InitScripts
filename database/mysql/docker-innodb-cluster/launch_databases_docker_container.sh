@@ -32,8 +32,8 @@ portOnContainer1=3307
 # ```
 # docker exec <DockerContainerId> mysql -e "SHOW GLOBAL VARIABLES LIKE 'PORT';"
 # ``` 
-#cmd1="docker run $commonDockerContainerEnvs -d -p :$port1OnHostOS:$portOnContainer1 --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
-cmd1="docker run $commonDockerContainerEnvs -d --net=host --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --report-host=$unifiedHostname --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
+#cmd1="docker run $commonDockerContainerEnvs -d -p :$port1OnHostOS:$portOnContainer1 --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --skip-slave-start --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
+cmd1="docker run $commonDockerContainerEnvs -d --net=host --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --skip-slave-start --report-host=$unifiedHostname --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
 echo $cmd1
 #eval $cmd1
 
@@ -41,8 +41,8 @@ echo $cmd1
 # Can test by a mysql-client on the HostOS, e.g. "mysql --host <ip of HostOS> --port 3308 -uroot". 
 port2OnHostOS=3308
 portOnContainer2=3308
-#cmd2="docker run -d $commonDockerContainerEnvs -p :$port2OnHostOS:$portOnContainer2 --mount 'type=volume,src=shared_mysql_datadir_base_2,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=2 --report-port=$port2OnHostOS --port=$portOnContainer2 $commonMysqldOptions"
-cmd2="docker run -d $commonDockerContainerEnvs --net=host --mount 'type=volume,src=shared_mysql_datadir_base_2,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=2 --report-host=$unifiedHostname --report-port=$port2OnHostOS --port=$portOnContainer2 $commonMysqldOptions"
+#cmd2="docker run $commonDockerContainerEnvs -d -p :$port2OnHostOS:$portOnContainer2 --mount 'type=volume,src=shared_mysql_datadir_base_2,dst=/var/lib/mysql' mysql:$mysqldVersion --skip-slave-start --server-id=2 --report-port=$port2OnHostOS --port=$portOnContainer2 $commonMysqldOptions"
+cmd2="docker run $commonDockerContainerEnvs -d --net=host --mount 'type=volume,src=shared_mysql_datadir_base_2,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=2 --skip-slave-start --report-host=$unifiedHostname --report-port=$port2OnHostOS --port=$portOnContainer2 $commonMysqldOptions"
 echo $cmd2
 #eval $cmd2
 

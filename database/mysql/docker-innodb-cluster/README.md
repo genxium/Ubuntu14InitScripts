@@ -48,4 +48,17 @@ mysqlsh> dba.createCluster(...)
 for verification if such "--report-host" were expected.
 
 # Setting up a pair of Master-Slave(Replica, Readonly) MySQL instances without MySQLShell 
-That'd require manual works, the most common use case would be to setup a slave/replica for a master instance with existing data.
+That'd require manual works, the most common use case would be to setup a slave/replica for a master instance with existing data. For example, assume that we allow the "SlaveInstance" to use account `'repl'@'%'` for both dumping the initiating data from "MasterInstance" as well as replicating the data.
+
+```
+master> CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
+master> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, SUPER, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
+
+# By dumping with "--master-data" the "CHANGE MASTER TO" statements will be included, and with "--add-slave-statements" the "STOP SLAVE & START SLAVE" statements will be included.
+slave> mysqldump --all-database --master-data --apply-slave-statements --host=MASTER_INSTANCE_ADDR --port=MASTER_INSTANCE_ADDR -urepl -p > master.sql; 
+slave> mysql -uroot < master.sql 
+
+# If the import of "master.sql" returns an error saying that the GTID_EXECUTED is already set, one can confirm the situation by checking that "SHOW GLOBAL VARIABLES LIKE 'gtid_executed'; SHOW GLOBAL VARIABLES LIKE 'gtid_purged';" are in fact non-empty, then do "slave> RESET MASTER;" to preempt them and re-import "master.sql" again.
+
+# If only certain databases of the MasterInstance is supposed to be replicated on a SlaveInstance, try restarting the SlaveInstance with "--replicate-do-db" or update this variable by "[CHANGE_REPLICATION_FILTER](https://dev.mysql.com/doc/refman/5.7/en/change-replication-filter.html)" at runtime.
+```

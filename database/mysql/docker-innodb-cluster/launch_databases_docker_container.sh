@@ -20,7 +20,7 @@ mysqldVersion=8.0 # Deliberately using 8.0+ instead of 5.7- here, because since 
 ####
 # References for what mysqld options to add for "MySQL Group Replication" https://dev.mysql.com/doc/refman/5.7/en/group-replication-configuring-instances.html#group-replication-configure-replication-framework.
 ####
-commonMysqldOptions="--gtid-mode=ON --enforce-gtid-consistency=ON --binlog-checksum=NONE --log-bin=binlog --binlog-format=ROW --log-slave-updates=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE --transaction-write-set-extraction=XXHASH64"
+commonMysqldOptions="--gtid-mode=ON --read-only=off --enforce-gtid-consistency=ON --binlog-checksum=NONE --log-bin=binlog --binlog-format=ROW --log-slave-updates=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE --transaction-write-set-extraction=XXHASH64"
 
 commonDockerContainerEnvs="-e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes"
 
@@ -32,8 +32,8 @@ portOnContainer1=3307
 # ```
 # docker exec <DockerContainerId> mysql -e "SHOW GLOBAL VARIABLES LIKE 'PORT';"
 # ``` 
-#cmd1="docker run $commonDockerContainerEnvs -d -p :$port1OnHostOS:$portOnContainer1 --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --skip-slave-start --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
-cmd1="docker run $commonDockerContainerEnvs -d --net=host --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --skip-slave-start --report-host=$unifiedHostname --report-port=$port1OnHostOS --port=$portOnContainer1 $commonMysqldOptions"
+#cmd1="docker run $commonDockerContainerEnvs -d -p :$port1OnHostOS:$portOnContainer1 --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --port=$portOnContainer1 $commonMysqldOptions"
+cmd1="docker run $commonDockerContainerEnvs -d --net=host --mount 'type=volume,src=shared_mysql_datadir_base_1,dst=/var/lib/mysql' mysql:$mysqldVersion --server-id=1 --port=$portOnContainer1 $commonMysqldOptions"
 echo $cmd1
 #eval $cmd1
 

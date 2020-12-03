@@ -55,10 +55,24 @@ master> CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
 master> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, SUPER, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
 
 # By dumping with "--master-data" the "CHANGE MASTER TO" statements will be included, and with "--add-slave-statements" the "STOP SLAVE & START SLAVE" statements will be included.
-slave> mysqldump --all-database --master-data --apply-slave-statements --host=MASTER_INSTANCE_ADDR --port=MASTER_INSTANCE_ADDR -urepl -p > master.sql; 
+slave> mysqldump --all-databases --master-data --apply-slave-statements --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> -urepl -p > master.sql; 
 slave> mysql -uroot < master.sql 
+
+# Or a simplest "CHANGE MASTER TO" statement is like
+slave> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>',MASTER_PORT=<MASTER_INSTANCE_PORT>,MASTER_USER='repl',MASTER_PASSWORD='repl',MASTER_AUTO_POSITION=1,GET_MASTER_PUBLIC_KEY=1;
 
 # If the import of "master.sql" returns an error saying that the GTID_EXECUTED is already set, one can confirm the situation by checking that "SHOW GLOBAL VARIABLES LIKE 'gtid_executed'; SHOW GLOBAL VARIABLES LIKE 'gtid_purged';" are in fact non-empty, then do "slave> RESET MASTER;" to preempt them and re-import "master.sql" again.
 
 # If only certain databases of the MasterInstance is supposed to be replicated on a SlaveInstance, try restarting the SlaveInstance with "--replicate-do-db" or update this variable by "[CHANGE_REPLICATION_FILTER](https://dev.mysql.com/doc/refman/5.7/en/change-replication-filter.html)" at runtime.
 ```
+
+The "SlaveInstance" might be preferred to be "read_only" for all sessions except for the "MasterInstance", check with
+```
+slave> SELECT @@global.read_only, @@global.super_read_only;
+```
+and update with 
+```
+slave> SET @@global.read_only=0; 
+slave> SET @@global.super_read_only=0;
+```
+for such status if needed.

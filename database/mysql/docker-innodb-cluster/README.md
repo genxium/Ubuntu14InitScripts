@@ -76,3 +76,7 @@ slave> SET @@global.read_only=0;
 slave> SET @@global.super_read_only=0;
 ```
 for such status if needed.
+
+# Partial sync options
+  
+Either on the master or the slave, we can choose to only send/receive part of the synchronization messages, i.e. of certain schemas, see https://dev.mysql.com/doc/refman/5.7/en/change-replication-filter.html for the slave side adjustments.

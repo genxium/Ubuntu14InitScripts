@@ -52,7 +52,7 @@ That'd require manual works, the most common use case would be to setup a slave/
 
 ```
 master> CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
-master> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, SUPER, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
+master> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
 
 # By dumping with "--master-data" the "CHANGE MASTER TO" statements will be included, and with "--add-slave-statements" the "STOP SLAVE & START SLAVE" statements will be included.
 slave> mysqldump --all-databases --master-data --apply-slave-statements --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> -urepl -p > master.sql; 

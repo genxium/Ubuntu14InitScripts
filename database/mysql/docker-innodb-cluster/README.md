@@ -81,10 +81,10 @@ slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE
 slave> cat /path/to/replica_datadir/xtrabackup_binlog_info 
 
 # Starts the slave instance with /path/to/replica_datadir, example below using docker only 
-slave> docker run -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --net=host --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --report-host=192.168.56.102 --report-port=3308 --port=3308 --gtid-mode=ON --read-only=off --enforce-gtid-consistency=ON --binlog-checksum=NONE --log-bin=binlog --binlog-format=ROW --log-slave-updates=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE --transaction-write-set-extraction=XXHASH64 
+slave> docker run 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d -p --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --report-host=192.168.56.102 --report-port=3308 --port=3308 --gtid-mode=ON --read-only=off --enforce-gtid-consistency=ON --binlog-checksum=NONE --log-bin=binlog --binlog-format=ROW --log-slave-updates=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE --transaction-write-set-extraction=XXHASH64 
 
 # Sets master info, might need "UPDATE mysql.user SET Super_priv='Y' WHERE user='root'; FLUSH PRIVILEGES;" beforehand if prompted
-slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT='<MASTER_INSTANCE_PORT>', MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=0, MASTER_LOG_FILE='<NOTED_MASTER_LOG_FILE>', MASTER_LOG_POS=<NOTED_MASTER_LOG_POS>;
+slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=0, MASTER_LOG_FILE='<NOTED_MASTER_LOG_FILE>', MASTER_LOG_POS=<NOTED_MASTER_LOG_POS>;
 
 slave/mysql> START SLAVE;
 ```

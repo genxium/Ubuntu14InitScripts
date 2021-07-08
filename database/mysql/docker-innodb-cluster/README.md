@@ -56,35 +56,23 @@ master/mysql> CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
 master/mysql> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
 ```
 
-## Using `mysqldump`
-
+## Create a datadir using Percona `xtrabackup` (recommended)
 ```
-# By dumping with "--master-data" the "CHANGE MASTER TO" statements will be included, and with "--add-slave-statements" the "STOP SLAVE & START SLAVE" statements will be included.
-slave> mysqldump --all-databases --master-data --apply-slave-statements --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> -urepl -p > master.sql; 
-slave> mysql -uroot < master.sql 
-
-# If the import of "master.sql" returns an error saying that the GTID_EXECUTED is already set, one can confirm the situation by checking that "SHOW GLOBAL VARIABLES LIKE 'gtid_executed'; SHOW GLOBAL VARIABLES LIKE 'gtid_purged';" are in fact non-empty, then do "slave> RESET MASTER;" to preempt them and re-import "master.sql" again.
-
-# If more manual "CHANGE MASTER TO" calls are required
-slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
-```
-
-## Using Percona `xtrabackup` (recommended)
-```
-# Prepares the backup
-slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> --user=repl --password=repl --prepare --target-dir=/path/to/replica_datadir 
-
-# Actually dumps the backup
+# Dumps data
 slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> --user=repl --password=repl --target-dir=/path/to/replica_datadir 
 
-# Checks the `xtrabackup_binlog_info`, note down the first 2 params as 'NOTED_MASTER_LOG_FILE' and 'NOTED_MASTER_LOG_POS'
-slave> cat /path/to/replica_datadir/xtrabackup_binlog_info 
+# Prepares the backup for restoring, see https://www.percona.com/doc/percona-xtrabackup/2.2/xtrabackup_bin/preparing_the_backup.html for details
+slave> xtrabackup --prepare --target-dir=/path/to/replica_datadir 
+
+As we're using GTID on both the master and slave, there's no need to check `/path/to/replica_datadir/xtrabackup_binlog_info` for manual positioning, instead we do `MASTER_AUTO_POSITION=1`. 
 
 # Starts the slave instance with /path/to/replica_datadir, example below using docker only 
-slave> docker run 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d -p --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --report-host=192.168.56.102 --report-port=3308 --port=3308 --gtid-mode=ON --read-only=off --enforce-gtid-consistency=ON --binlog-checksum=NONE --log-bin=binlog --binlog-format=ROW --log-slave-updates=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE --transaction-write-set-extraction=XXHASH64 
+slave> docker run -p 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --report-host=192.168.56.102 --report-port=3308 --port=3308 --gtid-mode=ON --enforce-gtid-consistency=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE 
 
-# Sets master info, might need "UPDATE mysql.user SET Super_priv='Y' WHERE user='root'; FLUSH PRIVILEGES;" beforehand if prompted
-slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=0, MASTER_LOG_FILE='<NOTED_MASTER_LOG_FILE>', MASTER_LOG_POS=<NOTED_MASTER_LOG_POS>;
+# Sets master info 
+slave/mysql> UPDATE mysql.user SET Super_priv='Y' WHERE user='root'; 
+slave/mysql> FLUSH PRIVILEGES;
+slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
 
 slave/mysql> START SLAVE;
 ```

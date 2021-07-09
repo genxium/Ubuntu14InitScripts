@@ -56,7 +56,9 @@ master/mysql> CREATE USER 'repl'@'%' IDENTIFIED BY 'repl';
 master/mysql> GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD, PROCESS, USAGE, REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'repl'@'%';
 ```
 
-## Create a datadir using Percona `xtrabackup` (recommended)
+## Create a datadir using Percona `xtrabackup` 
+As we plan to disable GTID on both the master and slave, **before dumping data by `xtrabackup`**, the master should be turned into `gtid_mode=OFF` and had once `RESET MASTER -> restart process`, such that we're able to dump master binlog without GTID.  
+
 ```
 # Dumps data
 slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> --user=repl --password=repl --target-dir=/path/to/replica_datadir 
@@ -64,17 +66,25 @@ slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE
 # Prepares the backup for restoring, see https://www.percona.com/doc/percona-xtrabackup/2.2/xtrabackup_bin/preparing_the_backup.html for details
 slave> xtrabackup --prepare --target-dir=/path/to/replica_datadir 
 
-As we're using GTID on both the master and slave, there's no need to check `/path/to/replica_datadir/xtrabackup_binlog_info` for manual positioning, instead we do `MASTER_AUTO_POSITION=1`. 
 
 # Starts the slave instance with /path/to/replica_datadir, example below using docker only 
-slave> docker run -p 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --report-host=192.168.56.102 --report-port=3308 --port=3308 --gtid-mode=ON --enforce-gtid-consistency=ON --master-info-repository=TABLE --relay-log-info-repository=TABLE 
+slave> docker run -p 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --port=3308 --gtid-mode=OFF --enforce-gtid-consistency=OFF --master-info-repository=TABLE --relay-log-info-repository=TABLE 
 
 # Sets master info 
 slave/mysql> UPDATE mysql.user SET Super_priv='Y' WHERE user='root'; 
 slave/mysql> FLUSH PRIVILEGES;
-slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=1;
+
+# Resets mysql.slave_master_info
+slave/mysql> RESET MASTER;
+
+# Resets mysql.slave_relay_log_info
+slave/mysql> RESET SLAVE;
+
+slave/mysql> CHANGE MASTER TO MASTER_HOST='<MASTER_INSTANCE_ADDR>', MASTER_PORT=<MASTER_INSTANCE_PORT>, MASTER_USER='repl', MASTER_PASSWORD='repl', MASTER_AUTO_POSITION=0, MASTER_LOG_FILE='<1ST_IN_XTRABACKUP_BINLOG_INFO>', MASTER_LOG_POS=<2ND_IN_XTRABACKUP_BINLOG_INFO>;
 
 slave/mysql> START SLAVE;
+
+slave/mysql> SHOW SLAVE STATUS\G
 ```
 
 ## Optional steps

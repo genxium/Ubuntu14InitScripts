@@ -61,9 +61,10 @@ As we plan to disable GTID on both the master and slave, **before dumping data b
 
 ```
 # Dumps data
-slave> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> --user=repl --password=repl --target-dir=/path/to/replica_datadir 
+master> xtrabackup --backup --host=<MASTER_INSTANCE_ADDR> --port=<MASTER_INSTANCE_PORT> --user=repl --password=repl --target-dir=/path/to/replica_datadir
 
 # Prepares the backup for restoring, see https://www.percona.com/doc/percona-xtrabackup/2.2/xtrabackup_bin/preparing_the_backup.html for details
+slave> scp master:/path/to/replica_datadir /path/to/replica_datadir
 slave> xtrabackup --prepare --target-dir=/path/to/replica_datadir 
 
 

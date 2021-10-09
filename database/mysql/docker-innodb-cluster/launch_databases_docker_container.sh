@@ -30,7 +30,7 @@ commonMysqldOptions="--read-only=off --gtid-mode=OFF --enforce-gtid-consistency=
 masterOptions="--log-bin-index-=MASTER --log-bin=MASTER --binlog-format=MIXED --binlog-checksum=NONE --transaction-write-set-extraction=XXHASH64" # We need only "relay-log" on the slave side, no "slave side binlog" is necessary
 
 # 1. Fix the relay-binlog file name prefix to "SLAVE"
-slaveOptions="--relay-log-index=SLAVE --relay-log=SLAVE --relay-log-info-repository=TABLE --relay-log-recovery=ON --skip-slave-start" # According to "https://dev.mysql.com/doc/refman/5.7/en/replication-solutions-unexpected-replica-halt.html", "his setting ignores the existing relay log files, in case they are corrupted or inconsistent. The relay log recovery process starts a new relay log file and fetches transactions from the source beginning at the replication SQL thread position recorded in the applier metadata repository", where the "applier metadata repository" is hereby set to `table mysql.slave_relay_log_info` 
+slaveOptions="--relay-log-index=SLAVE --relay-log=SLAVE --relay-log-info-repository=TABLE --relay-log-recovery=ON --skip-slave-start --skip-grant-tables" # According to "https://dev.mysql.com/doc/refman/5.7/en/replication-solutions-unexpected-replica-halt.html", "his setting ignores the existing relay log files, in case they are corrupted or inconsistent. The relay log recovery process starts a new relay log file and fetches transactions from the source beginning at the replication SQL thread position recorded in the applier metadata repository", where the "applier metadata repository" is hereby set to `table mysql.slave_relay_log_info` 
 
 commonDockerContainerEnvs="-e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes"
 

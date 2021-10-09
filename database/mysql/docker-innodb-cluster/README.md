@@ -69,7 +69,7 @@ slave> xtrabackup --prepare --target-dir=/path/to/replica_datadir
 
 
 # Starts the slave instance with /path/to/replica_datadir, example below using docker only 
-slave> docker run -p 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --port=3308 --gtid-mode=OFF --enforce-gtid-consistency=OFF --master-info-repository=TABLE --relay-log-info-repository=TABLE --relay-log-index=SLAVE --relay-log=SLAVE --relay-log-recovery=ON 
+slave> docker run -p 192.168.56.102:3308:3308 -e MYSQL_ROOT_HOST=% -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d --mount 'type=bind,src=/path/to/replica_datadir,dst=/var/lib/mysql' mysql:8.0 --server-id=2 --skip-slave-start --port=3308 --gtid-mode=OFF --enforce-gtid-consistency=OFF --master-info-repository=TABLE --relay-log-info-repository=TABLE --relay-log-index=SLAVE --relay-log=SLAVE --relay-log-recovery=ON --skip-grant-tables 
 
 # Sets master info 
 slave/mysql> UPDATE mysql.user SET Super_priv='Y' WHERE user='root'; 
